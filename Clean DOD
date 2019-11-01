@@ -1,0 +1,28 @@
+import math
+import numpy as np
+from scipy import linalg
+import matplotlib.pyplot as plt
+import csv
+import pandas as pd
+
+ambcsv = pd.read_csv('/home/uscheed/Downloads/Ambulatory_Surgical_Measures-Facility.csv', encoding='cp1252')
+asccsv = pd.read_csv('/home/uscheed/Downloads/asc_CCN_pr16q4_17q3.csv', encoding='cp1252')
+timeffcsv = pd.read_csv('/home/uscheed/Downloads/Timely and Effective Care - Hospital.csv', encoding='cp1252')
+ipfqrcsv = pd.read_csv('/home/uscheed/Downloads/IPFQR_FUH_QualityMeasures_Facility.csv', encoding='cp1252')
+dodcsv = pd.DataFrame(pd.read_csv('/home/uscheed/Downloads/DoD_TRISS_Data_20180424.csv', encoding='cp1252'))
+
+print("number of hospitals:", len(pd.unique(dodcsv['Hospital Name'])))
+print("hospitals:", pd.unique(dodcsv['Hospital Name']))
+
+doddf = pd.DataFrame()
+doddf['Hospital Name'] = dodcsv['Hospital Name']
+doddf['Address'] = dodcsv['Address']
+doddf['City'] = dodcsv['City']
+doddf['State'] = dodcsv['State']
+doddf['ZIP Code'] = dodcsv['ZIP Code']
+doddf['Survey Question'] = dodcsv['Survey Question']
+doddf['Patient Survey Star Rating'] = dodcsv['Patient Survey Star Rating']
+
+doddf[doddf['Survey Question'].str.contains("star rating")]
+notapp = doddf[doddf['Patient Survey Star Rating'].str.contains("Not Applicable") == False]
+finaldod = notapp[notapp['Patient Survey Star Rating'].str.contains("Not Available") == False]
