@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+#data = pandas.read_csv('Advanced/Hospital_Revised_Flatfiles/DoD_TRISS_Data_20180424.csv')
+#mortalityHos = pandas.read_csv('Advanced/Hospital_Revised_Flatfiles/DoD_TRISS_Data_20180424.csv')
+HAI = pandas.read_csv('Advanced/Hospital_Revised_Flatfiles/Healthcare Associated Infections - Hospital.csv')
+
+HAI.head()
+HAI = pd.DataFrame(HAI)
+proc_HAI = HAI['Measure Name']
+name_HAI = HAI['Hospital Name']
+ID_HAI = HAI['Measure ID']
+bench_HAI = HAI['Compared to National']
+scr_HAI = HAI['Score']
+#drop the 5 rows of stat measures before the actual measure
+idx_HAI = [idx for idx in range(len(proc_HAI)) if (idx+1)%6 == 0]
+dat = [name_HAI[idx_HAI],ID_HAI[idx_HAI],scr_HAI[idx_HAI]]
+HAI_cl = pd.concat(dat,axis=1)
+HAI_cl = HAI_cl.loc[HAI_cl['Score'] != 'Not Available']
+
+#proc_HAI_summary = [(n,s,int(p)) for (n,s,p) in proc_HAI]
+
